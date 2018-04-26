@@ -124,6 +124,7 @@ public class GolfBallDeliveryActivity extends Activity {
     public int mLeftStraightPwmValue = 255, mRightStraightPwmValue = 255;
 	// ------------------------ End of Driving area ------------------------------
 
+    private Scripts mScripts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
