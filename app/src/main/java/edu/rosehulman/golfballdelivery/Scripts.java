@@ -1,6 +1,32 @@
 package edu.rosehulman.golfballdelivery;
 
+import android.app.Activity;
+import android.widget.Toast;
+
+import edu.rosehulman.me435.RobotActivity;
+
 public class Scripts {
+    private Activity mActivity
+
+    public Scripts(Activity activity){
+        mActivity = activity;
+    }
+
+    public void testStraightScript(){
+        mActivity.sendWheelSpeed(mActivity.mLeftStraightPwmValue, mActivity.mRightStraightPwmValue);
+        Toast.makeText(mActivity, "Begin driving",Toast.LENGTH_SHORT).show();
+    }
+
+    public void nearBallScript(){
+        double distanceToNearBall = NavUtils.getDistance(15,0,90,50);
+        long driveTimeMs = (long) (distanceToNearBall/ RobotActivity.DEFAULT_SPEED_FT_PER_SEC*1000);
+
+        // FOR testing this has been made shorter
+        driveTimeMs = 3000;
+
+        mActivity.sendWheelSpeed(mActivity.mLeftStraightPwmValue, mActivity.mRightStraightPwmValue);
+
+    }
 
     public void farBallScript() {
         mActivity.sendWheelSpeed( 0, 0);

@@ -3,6 +3,7 @@ package edu.rosehulman.golfballdelivery;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,7 +16,9 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class GolfBallDeliveryActivity extends Activity {
+import edu.rosehulman.me435.RobotActivity;
+
+public class GolfBallDeliveryActivity extends RobotActivity {
 
 	/** Constant used with logging that you'll see later. */
 	public static final String TAG = "GolfBallDelivery";
@@ -151,6 +154,8 @@ public class GolfBallDeliveryActivity extends Activity {
             TableLayout fakeGpsButtonTable = (TableLayout) findViewById(R.id.fake_gps_button_table);
             fakeGpsButtonTable.setVisibility(View.GONE);
         }
+        mScripts = new Scripts(this);
+
     }
 
     /**
@@ -180,17 +185,32 @@ public class GolfBallDeliveryActivity extends Activity {
 
     // --------------------------- Methods added ---------------------------
 
+    @Override
+    public void loop() {
+        super.loop();
+
+        mStateTimeTextView.setText("" + getStateTimeMs() / 1000);
+        mGuessXYTextView.setText("(" + (int) mGuessX + ", " + (int) mGuessY + ")");
+    }
 
 	
 	
 	
 	
 	// --------------------------- Drive command ---------------------------
-	
+	@Override
+    public void sendWheelSpeed(int leftDutyCycle, int rightDutyCycle) {
+        super.sendWheelSpeed(leftDutyCycle,rightDutyCycle);
+        mLeftDutyCycleTextView.setText("Left\n" + mLeftDutyCycle);
+        mRightDutyCycleTextView.setText("Right\n" + mRightDutyCycle);
+    }
 	
 
     // --------------------------- Sensor listeners ---------------------------
-
+    @Override
+    public void onLocationChanged(double x, double y, double heading, Location location){
+        
+    }
 
 
     // --------------------------- Button Handlers ----------------------------
@@ -293,7 +313,8 @@ public class GolfBallDeliveryActivity extends Activity {
             public void onClick(View v) {
                 mLeftStraightPwmValue = leftDutyCyclePicker.getValue();
                 mRightStraightPwmValue = rightDutyCyclePicker.getValue();
-                Toast.makeText(GolfBallDeliveryActivity.this, "TODO: Implement the drive straight test", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(GolfBallDeliveryActivity.this, "TODO: Implement the drive straight test", Toast.LENGTH_SHORT).show();
+                mScripts.testStraightScript();
             }
         });
         alert = builder.create();
